@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareCircle AI - App</title>
+    <!-- Import beautiful Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-hover: #0f766e;
+            --bg-gradient: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: padding 0.3s ease;
+        }
+
+        .hidden { display: none !important; }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        /* --- Login Styles --- */
+        .login-wrapper {
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .header-text {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header-text h1 {
+            color: var(--primary);
+            margin: 0 0 0.5rem 0;
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .header-text p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .input-group { margin-bottom: 1.5rem; }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-main);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background-color: #f8fafc;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
+        }
+
+        input::placeholder { color: #94a3b8; }
+
+        button {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            box-shadow: var(--shadow-sm);
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        button:active { transform: translateY(0); }
+
+        /* --- Dashboard Styles --- */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: var(--surface);
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .dashboard-header h2 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .dashboard-header p {
+            margin: 0.25rem 0 0 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        #logout-btn {
+            width: auto;
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        #logout-btn:hover { background-color: #e2e8f0; }
+
+        .dashboard-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .dashboard-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        }
+
+        .section-card { padding: 2rem; }
+
+        .section-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0;
+            color: var(--text-main);
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+            min-height: 60px;
+        }
+
+        li {
+            background: #f8fafc;
+            padding: 0.875rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border: 1px solid var(--border);
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        li::before {
+            content: "✨";
+            font-size: 1.1rem;
+        }
+
+        .empty-state {
+            color: var(--text-muted) !important;
+            font-style: italic;
+            background: none !important;
+            border: none !important;
+            padding-left: 0 !important;
+        }
+        .empty-state::before { display: none; }
+
+        .action-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-row input { flex: 1; margin: 0; }
+        .action-row button { width: auto; white-space: nowrap; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="login-screen" class="login-wrapper">
+            <div class="card">
+                <div class="header-text">
+                    <h1>CareCircle AI</h1>
+                    <p>Welcome back! Please sign in.</p>
+                </div>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" required placeholder="name@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="password" required placeholder="••••••••">
+                    </div>
+                    <button type="submit">Access Dashboard →</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div id="dashboard-screen" class="hidden">
+            <div class="dashboard-header">
+                <div>
+                    <h2>CareCircle Dashboard</h2>
+                    <p>Manage your patient care profiles securely.</p>
+                </div>
+                <button id="logout-btn">Log out</button>
+            </div>
+            
+            <div class="dashboard-grid">
+                <!-- Medicines Section -->
+                <div class="card section-card">
+                    <h3>💊 Prescribed Medicines</h3>
+                    <ul id="medicines-list">
+                        <li class="empty-state">No medicines added yet.</li>
+                    </ul>
+                    <div class="action-row">
+                        <input type="text" id="new-medicine" placeholder="E.g. Aspirin 80mg">
+                        <button id="add-medicine">Add</button>
+                    </div>
+                </div>
+
+                <!-- Members Section -->
+                <div class="card section-card">
+                    <h3>👥 Care Members</h3>
+                    <ul id="members-list">
+                        <li class="empty-state">No members added yet.</li>
+                    </ul>
+                    <div class="action-row">
+                        <input type="text" id="new-member" placeholder="E.g. Dr. Jane Doe">
+                        <button id="add-member">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let medicines = [];
+        let members = [];
+
+        // DOM Elements
+        const loginScreen = document.getElementById('login-screen');
+        const dashboardScreen = document.getElementById('dashboard-screen');
+        const loginForm = document.getElementById('login-form');
+        const logoutBtn = document.getElementById('logout-btn');
+        
+        const medicinesList = document.getElementById('medicines-list');
+        const newMedicineInput = document.getElementById('new-medicine');
+        const addMedicineBtn = document.getElementById('add-medicine');
+        
+        const membersList = document.getElementById('members-list');
+        const newMemberInput = document.getElementById('new-member');
+        const addMemberBtn = document.getElementById('add-member');
+
+        const emptyStateHtml = `<li class="empty-state">No items added yet.</li>`;
+
+        // Bypassed Login
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            loginScreen.classList.add('hidden');
+            dashboardScreen.classList.remove('hidden');
+            
+            // Adjust layout for dashboard
+            document.body.style.alignItems = 'flex-start';
+            document.body.style.paddingTop = '3rem';
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', () => {
+            dashboardScreen.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            
+            // Reset layout for login
+            document.body.style.alignItems = 'center';
+            document.body.style.paddingTop = '0';
+            loginForm.reset();
+        });
+
+        // Medicine handlers
+        function renderMedicines() {
+            if (medicines.length === 0) {
+                medicinesList.innerHTML = emptyStateHtml;
+            } else {
+                medicinesList.innerHTML = medicines.map(m => `<li>${m}</li>`).join('');
+            }
+        }
+        
+        addMedicineBtn.addEventListener('click', () => {
+            const val = newMedicineInput.value.trim();
+            if (val) {
+                medicines.push(val);
+                newMedicineInput.value = '';
+                renderMedicines();
+            }
+        });
+
+        newMedicineInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addMedicineBtn.click();
+        });
+
+        // Member handlers
+        function renderMembers() {
+            if (members.length === 0) {
+                membersList.innerHTML = emptyStateHtml;
+            } else {
+                membersList.innerHTML = members.map(m => `<li>${m}</li>`).join('');
+            }
+        }
+
+        addMemberBtn.addEventListener('click', () => {
+            const val = newMemberInput.value.trim();
+            if (val) {
+                members.push(val);
+                newMemberInput.value = '';
+                renderMembers();
+            }
+        });
+
+        newMemberInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addMemberBtn.click();
+        });
+    </script>
+</body>
+</html>
